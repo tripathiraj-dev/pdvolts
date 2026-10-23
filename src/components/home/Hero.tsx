@@ -158,7 +158,7 @@ export default function Hero() {
   const activeSlide = slides[currentSlide];
 
   return (
-    <div className="w-full bg-slate-950">
+    <div className="w-full bg-slate-100">
       {/* 1. CRYSTAL CLEAR 1080P HD VIDEO CAROUSEL SECTION */}
       <section className="relative w-full overflow-hidden min-h-[480px] sm:min-h-[520px] lg:min-h-[560px] flex items-center bg-slate-950">
         {/* Background Video Slides with Exact 16:9 Scale (Zero Pixelation / No 300% Zoom) */}
@@ -193,7 +193,7 @@ export default function Hero() {
                   </div>
                 )}
 
-                {/* Balanced Cinematic Industrial Overlay (Preserves machinery sharpness & color) */}
+                {/* Balanced Cinematic Industrial Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-slate-950/25" />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-transparent" />
               </div>
@@ -307,46 +307,44 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* 2. PRODUCT CARDS DIRECTLY BELOW VIDEO */}
-      <section className="bg-slate-900 border-t border-slate-800 py-8 sm:py-12">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {bottomCards.map((card) => {
-              const Icon = card.icon;
-              return (
-                <Link
-                  key={card.id}
-                  href={card.href}
-                  className="group bg-slate-950/80 hover:bg-slate-950 rounded-2xl p-4 sm:p-6 border border-slate-800 hover:border-amber-500/50 transition-all duration-300 hover:shadow-xl hover:shadow-black/50 hover:-translate-y-1 active:scale-[0.99] flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-3 sm:mb-4">
-                      <div className="p-2.5 sm:p-3 rounded-xl bg-slate-900 border border-slate-800 text-amber-400 group-hover:scale-110 group-hover:border-amber-500/40 transition-all">
-                        <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
-                      </div>
-                      <span className="text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-amber-950/80 text-amber-400 border border-amber-500/30">
-                        {card.badge}
-                      </span>
+      {/* 2. BRIGHT & CLEAN PRODUCT CARDS DIRECTLY BELOW VIDEO */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+          {bottomCards.map((card) => {
+            const Icon = card.icon;
+            return (
+              <Link
+                key={card.id}
+                href={card.href}
+                className={`group bg-white rounded-2xl p-4 sm:p-6 border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] flex flex-col justify-between ${card.accent}`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className={`p-2.5 sm:p-3 rounded-xl border ${card.iconColor} shadow-sm group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-
-                    <h2 className="text-base sm:text-lg font-black text-white group-hover:text-amber-400 transition-colors">
-                      {card.title}
-                    </h2>
-                    <div className="text-[11px] sm:text-xs font-bold text-slate-400 mt-0.5">{card.subtitle}</div>
-
-                    <p className="text-xs text-slate-300 mt-2 sm:mt-2.5 leading-relaxed line-clamp-2 sm:line-clamp-none">
-                      {card.desc}
-                    </p>
+                    <span className={`text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${card.tagColor}`}>
+                      {card.badge}
+                    </span>
                   </div>
 
-                  <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-800 flex items-center justify-between text-xs font-bold text-amber-400 group-hover:text-amber-300">
-                    <span>Explore Catalog</span>
-                    <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors">
+                    {card.title}
+                  </h2>
+                  <div className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">{card.subtitle}</div>
+
+                  <p className="text-xs text-slate-600 mt-2 sm:mt-2.5 leading-relaxed line-clamp-2 sm:line-clamp-none">
+                    {card.desc}
+                  </p>
+                </div>
+
+                <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
+                  <span>Explore Catalog</span>
+                  <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </section>
     </div>

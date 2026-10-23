@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { getSessionUser } from "@/lib/auth";
 import { storageProvider, validateUploadFile } from "@/lib/storage";
 
 export async function POST(req: Request) {
@@ -33,8 +32,11 @@ export async function POST(req: Request) {
       fileSize: result.fileSize,
       mimeType: result.mimeType,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Upload API Error:", error);
-    return NextResponse.json({ error: "File upload processing failed" }, { status: 500 });
+    return NextResponse.json(
+      { error: error?.message || "File upload processing failed" },
+      { status: 500 }
+    );
   }
 }

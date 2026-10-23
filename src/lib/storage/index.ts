@@ -14,7 +14,7 @@ export interface IStorageProvider {
   delete(fileUrl: string): Promise<boolean>;
 }
 
-// Local File System Storage Provider
+// Local + Serverless-safe Storage Provider
 export class LocalStorageProvider implements IStorageProvider {
   private baseUploadDir: string;
 
@@ -36,9 +36,6 @@ export class LocalStorageProvider implements IStorageProvider {
     mimeType: string,
     subfolder: string = "general"
   ): Promise<UploadResult> {
-    const targetDir = path.join(this.baseUploadDir, subfolder);
-    await this.ensureDir(targetDir);
-
     const ext = path.extname(originalName).toLowerCase() || "";
     const cleanBase = path
       .basename(originalName, ext)
@@ -46,14 +43,34 @@ export class LocalStorageProvider implements IStorageProvider {
       .slice(0, 30);
     const uniqueSuffix = `${Date.now()}-${crypto.randomBytes(4).toString("hex")}`;
     const safeFileName = `${cleanBase}-${uniqueSuffix}${ext}`;
-    const filePath = path.join(targetDir, safeFileName);
 
-    await fs.writeFile(filePath, buffer);
+    // On Vercel or serverless environments, file system is read-only.
+    // If running on Vercel OR if writing to filesystem fails, fallback safely to Data URL!
+    const isVercel = Boolean(process.env.VERCEL || process.env.NEXT_PUBLIC_VERCEL_ENV);
 
-    const publicUrl = `/uploads/${subfolder}/${safeFileName}`;
+    if (!isVercel) {
+      try {
+        const targetDir = path.join(this.baseUploadDir, subfolder);
+        await this.ensureDir(targetDir);
+        const filePath = path.join(targetDir, safeFileName);
+        await fs.writeFile(filePath, buffer);
 
+        const publicUrl = `/uploads/${subfolder}/${safeFileName}`;
+        return {
+          url: publicUrl,
+          fileName: safeFileName,
+          fileSize: buffer.length,
+          mimeType,
+        };
+      } catch (err) {
+        console.warn("Filesystem write failed, falling back to Data URL:", err);
+      }
+    }
+
+    // Serverless / Vercel fallback: store as high-speed Data URI (works seamlessly in all <img> tags and DBs)
+    const dataUrl = `data:${mimeType};base64,${buffer.toString("base64")}`;
     return {
-      url: publicUrl,
+      url: dataUrl,
       fileName: safeFileName,
       fileSize: buffer.length,
       mimeType,
@@ -79,6 +96,7 @@ const ALLOWED_MIME_TYPES = new Set([
   "image/png",
   "image/webp",
   "image/svg+xml",
+  "image/gif",
   "application/pdf",
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",

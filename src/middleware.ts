@@ -6,22 +6,13 @@ const COOKIE_NAME = "pdvolts_session";
 const secretKey = process.env.JWT_SECRET || "pdvolts_ultra_secure_jwt_signing_secret_key_prod_2026";
 const encodedKey = new TextEncoder().encode(secretKey);
 
-// Public routes accessible without logging in
-const PUBLIC_AUTH_PATHS = [
-  "/login",
-  "/register",
-  "/forgot-password",
-  "/reset-password",
-];
-
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // 1. Allow Next.js static files, images, uploads, and public static assets
+  // 1. Static files & public assets
   if (
     pathname.startsWith("/_next") ||
     pathname.startsWith("/uploads") ||
-    pathname.startsWith("/api/auth") ||
     pathname === "/favicon.ico" ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml" ||
@@ -30,11 +21,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const isAuthRoute = PUBLIC_AUTH_PATHS.some(
-    (path) => pathname === path || pathname.startsWith(path + "/")
-  );
-
-  // 2. Verify Session JWT Token
+  // 2. Read session JWT token
   const sessionCookie = request.cookies.get(COOKIE_NAME)?.value;
   let sessionUser: { role?: string; id?: string; email?: string } | null = null;
 
@@ -49,52 +36,48 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 3. If NOT logged in: Gate everything and redirect to /login
-  if (!sessionUser) {
-    // If already requesting login, register, or forgot-password, let them through
-    if (isAuthRoute) {
-      return NextResponse.next();
-    }
+  const isAuthRoute =
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password";
 
-    // For any API route (except /api/auth/* which was allowed above), return 401
-    if (pathname.startsWith("/api/")) {
-      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
-    }
-
-    // Redirect to /login with callbackUrl so they return to their requested page after login
-    const loginUrl = new URL("/login", request.url);
-    if (pathname !== "/") {
-      loginUrl.searchParams.set("callbackUrl", pathname);
-    }
-    return NextResponse.redirect(loginUrl);
-  }
-
-  // 4. If logged in and visits /login or /register, redirect to Home or Admin
-  if (isAuthRoute) {
-    if (sessionUser.role === "ADMIN" || sessionUser.role === "SUPER_ADMIN") {
-      return NextResponse.redirect(new URL("/admin", request.url));
+  // 3. If already logged in and visiting login/register, let them go home or dashboard
+  if (sessionUser && isAuthRoute) {
+    const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
+    if (callbackUrl && callbackUrl !== "/login" && callbackUrl !== "/register") {
+      return NextResponse.redirect(new URL(callbackUrl, request.url));
     }
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // 5. Protect Admin Control Panel routes (only ADMIN & SUPER_ADMIN)
+  // 4. Protect /admin routes (Only ADMIN & SUPER_ADMIN allowed)
   if (pathname.startsWith("/admin")) {
+    if (!sessionUser) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
     if (sessionUser.role !== "ADMIN" && sessionUser.role !== "SUPER_ADMIN") {
       return NextResponse.redirect(new URL("/dashboard?error=unauthorized", request.url));
     }
   }
 
+  // 5. Protect /dashboard routes (Any logged-in user allowed)
+  if (pathname.startsWith("/dashboard")) {
+    if (!sessionUser) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
+  // Everything else is a public route (Home, Products, Raw Materials, Blog, About, etc.)
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for the ones starting with:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     */
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 };

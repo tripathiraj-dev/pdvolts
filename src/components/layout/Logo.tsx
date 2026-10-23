@@ -30,7 +30,7 @@ export default function Logo({
         className={`inline-flex items-center group select-none ${className}`}
         aria-label="PDVOLT - Precision Wires, Cables, Polymers & Pipes"
       >
-        <div className="relative p-1 rounded-xl group-hover:scale-105 transition-all duration-300">
+        <div className="relative p-1.5 rounded-xl bg-slate-950 border border-slate-800 shadow-md group-hover:border-amber-500/60 group-hover:scale-105 transition-all duration-300">
           <img
             src="/images/pdvolt-icon.png"
             alt="PDVOLT Emblem"
@@ -52,7 +52,7 @@ export default function Logo({
         className={`inline-flex flex-col group select-none ${className}`}
         aria-label="PDVOLT - Powering Your Projects"
       >
-        <div className="relative inline-block p-1 group-hover:scale-[1.02] transition-all duration-300">
+        <div className="relative inline-block p-2 rounded-2xl bg-slate-950 border border-slate-800 shadow-xl group-hover:border-amber-500/50 group-hover:scale-[1.02] transition-all duration-300">
           <img
             src="/images/pdvolt-full.png"
             alt="PDVOLT - Cables, Wires, Pipes, Raw Materials"
@@ -63,14 +63,14 @@ export default function Logo({
     );
   }
 
-  // Default: Horizontal Brand Lockup (Seamless on dark backgrounds with subtle lighting)
+  // Default: Horizontal Brand Lockup inside a high-tech obsidian capsule
   return (
     <Link
       href="/"
       className={`inline-flex items-center group select-none shrink-0 ${className}`}
       aria-label="PDVOLT - Precision Wires, Cables, Polymers & Pipes"
     >
-      <div className="relative flex items-center py-0.5 group-hover:scale-[1.02] transition-transform duration-300">
+      <div className="relative flex items-center bg-slate-950 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl border border-slate-800/90 shadow-md group-hover:border-amber-500/60 group-hover:shadow-amber-500/15 group-hover:scale-[1.02] transition-all duration-300">
         <img
           src="/images/pdvolt-horizontal.png"
           alt="PDVOLT - Powering Your Projects"
