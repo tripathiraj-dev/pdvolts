@@ -119,9 +119,10 @@ model Enquiry {
   email     String
   phone     String?
   company   String?
-  subject   String
-  message   String
-  status    String   @default("NEW") // NEW, CONTACTED, IN_PROGRESS, CLOSED
+  subject       String
+  message       String
+  attachmentUrl String?
+  status        String   @default("NEW") // NEW, CONTACTED, IN_PROGRESS, CLOSED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
