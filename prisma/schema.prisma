@@ -1,36 +1,36 @@
 // Prisma Schema for PdVolts - Wire & Plastic Manufacturing Company
-// Compatible with both SQLite (for zero-config local development) and PostgreSQL (for production)
+// Configured for MongoDB Atlas
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id               String           @id @default(cuid())
+  id               String    @id @default(cuid()) @map("_id")
   name             String
-  email            String           @unique
+  email            String    @unique
   password         String
   phone            String?
   company          String?
-  role             String           @default("USER") // USER, ADMIN, SUPER_ADMIN
-  isActive         Boolean          @default(true)
+  role             String    @default("USER") // USER, ADMIN, SUPER_ADMIN
+  isActive         Boolean   @default(true)
   resetToken       String?
   resetTokenExpiry DateTime?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
-  enquiries        Enquiry[]
-  quoteRequests    QuoteRequest[]
-  savedProducts    SavedProduct[]
+  enquiries     Enquiry[]
+  quoteRequests QuoteRequest[]
+  savedProducts SavedProduct[]
 }
 
 model ProductCategory {
-  id          String    @id @default(cuid())
+  id          String    @id @default(cuid()) @map("_id")
   name        String
   slug        String    @unique
   description String?
@@ -39,44 +39,43 @@ model ProductCategory {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
-  products    Product[]
+  products Product[]
 }
 
 model Product {
-  id               String                 @id @default(cuid())
+  id               String   @id @default(cuid()) @map("_id")
   name             String
-  slug             String                 @unique
+  slug             String   @unique
   categoryId       String
-  category         ProductCategory        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  category         ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   shortDescription String
   fullDescription  String
   sku              String?
-  moq              String?                // e.g. "500 Meters"
-  material         String?                // e.g. "Electrolytic Grade Copper / High-Grade PVC"
-  size             String?                // e.g. "0.5 sq.mm - 50 sq.mm"
-  color            String?                // e.g. "Red, Black, Blue, Yellow, Green"
-  voltageRating    String?                // e.g. "1100V AC"
-  application      String?                // e.g. "Automotive Wiring, Building Infrastructure"
-  packaging        String?                // e.g. "100m Coils / Spools"
-  isFeatured       Boolean                @default(false)
-  isActive         Boolean                @default(true)
+  moq              String?  // e.g. "500 Meters"
+  material         String?  // e.g. "Electrolytic Grade Copper / High-Grade PVC"
+  size             String?  // e.g. "0.5 sq.mm - 50 sq.mm"
+  color            String?  // e.g. "Red, Black, Blue, Yellow, Green"
+  voltageRating    String?  // e.g. "1100V AC"
+  application      String?  // e.g. "Automotive Wiring, Building Infrastructure"
+  packaging        String?  // e.g. "100m Coils / Spools"
+  isFeatured       Boolean  @default(false)
+  isActive         Boolean  @default(true)
   seoTitle         String?
   seoDescription   String?
   datasheetUrl     String?
-  createdAt        DateTime               @default(now())
-  updatedAt        DateTime               @updatedAt
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  images           ProductImage[]
-  specifications   ProductSpecification[]
-  quoteRequests    QuoteRequest[]
-  savedBy          SavedProduct[]
+  images         ProductImage[]
+  specifications ProductSpecification[]
+  quoteRequests  QuoteRequest[]
+  savedBy        SavedProduct[]
 
   @@index([categoryId])
-  @@index([slug])
 }
 
 model ProductImage {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   productId String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   url       String
@@ -88,7 +87,7 @@ model ProductImage {
 }
 
 model ProductSpecification {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   productId String
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   key       String
@@ -100,7 +99,7 @@ model ProductSpecification {
 }
 
 model SavedProduct {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   productId String
@@ -113,50 +112,50 @@ model SavedProduct {
 }
 
 model Enquiry {
-  id        String        @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   userId    String?
-  user      User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   name      String
   email     String
   phone     String?
   company   String?
   subject   String
   message   String
-  status    String        @default("NEW") // NEW, CONTACTED, IN_PROGRESS, CLOSED
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  status    String   @default("NEW") // NEW, CONTACTED, IN_PROGRESS, CLOSED
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  notes     EnquiryNote[]
+  notes EnquiryNote[]
 
   @@index([status])
 }
 
 model QuoteRequest {
-  id            String        @id @default(cuid())
+  id            String   @id @default(cuid()) @map("_id")
   userId        String?
-  user          User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
   name          String
   company       String
   email         String
   phone         String
   country       String?
   productId     String?
-  product       Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+  product       Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   quantity      String
   requirements  String?
   message       String?
   attachmentUrl String?
-  status        String        @default("NEW") // NEW, CONTACTED, IN_PROGRESS, QUOTED, CONVERTED, CLOSED
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
+  status        String   @default("NEW") // NEW, CONTACTED, IN_PROGRESS, QUOTED, CONVERTED, CLOSED
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
-  notes         EnquiryNote[]
+  notes EnquiryNote[]
 
   @@index([status])
 }
 
 model EnquiryNote {
-  id             String        @id @default(cuid())
+  id             String        @id @default(cuid()) @map("_id")
   enquiryId      String?
   enquiry        Enquiry?      @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
   quoteRequestId String?
@@ -170,7 +169,7 @@ model EnquiryNote {
 }
 
 model BlogPost {
-  id             String    @id @default(cuid())
+  id             String    @id @default(cuid()) @map("_id")
   title          String
   slug           String    @unique
   excerpt        String
@@ -185,12 +184,11 @@ model BlogPost {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
-  @@index([slug])
   @@index([isPublished])
 }
 
 model Testimonial {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   clientName  String
   company     String
   position    String
@@ -203,7 +201,7 @@ model Testimonial {
 }
 
 model GalleryImage {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   title       String
   description String?
   category    String   // Manufacturing, Quality Control, Products, Facilities
@@ -216,7 +214,7 @@ model GalleryImage {
 }
 
 model Certification {
-  id                String   @id @default(cuid())
+  id                String   @id @default(cuid()) @map("_id")
   title             String
   issuingBody       String
   certificateNumber String?
@@ -229,7 +227,7 @@ model Certification {
 }
 
 model Download {
-  id            String   @id @default(cuid())
+  id            String   @id @default(cuid()) @map("_id")
   title         String
   category      String   // Catalogues, Datasheets, Certificates, Company Profile
   description   String?
@@ -243,25 +241,25 @@ model Download {
 }
 
 model Career {
-  id               String           @id @default(cuid())
+  id               String   @id @default(cuid()) @map("_id")
   title            String
   department       String
   location         String
-  employmentType   String           // Full-Time, Shift-Based, Contract
+  employmentType   String   // Full-Time, Shift-Based, Contract
   experience       String
   description      String
   requirements     String
   responsibilities String
   salaryInfo       String?
   deadline         String?
-  isActive         Boolean          @default(true)
-  createdAt        DateTime         @default(now())
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
 
-  applications     JobApplication[]
+  applications JobApplication[]
 }
 
 model JobApplication {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   careerId    String
   career      Career   @relation(fields: [careerId], references: [id], onDelete: Cascade)
   fullName    String
@@ -277,7 +275,7 @@ model JobApplication {
 }
 
 model Faq {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   question    String
   answer      String
   category    String   // General, Technical, Orders, Quality
@@ -289,7 +287,7 @@ model Faq {
 }
 
 model Industry {
-  id          String   @id @default(cuid())
+  id          String   @id @default(cuid()) @map("_id")
   title       String
   slug        String   @unique
   summary     String
@@ -302,17 +300,15 @@ model Industry {
 }
 
 model SiteSetting {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   key       String   @unique
   value     String
   group     String   @default("general") // general, contact, seo, stats
   updatedAt DateTime @updatedAt
-
-  @@index([key])
 }
 
 model TeamMember {
-  id         String   @id @default(cuid())
+  id         String   @id @default(cuid()) @map("_id")
   name       String
   position   String
   department String?

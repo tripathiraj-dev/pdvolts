@@ -130,11 +130,15 @@ function LoginForm() {
       <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-center bg-white">
         <div className="max-w-md w-full mx-auto space-y-6">
           <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold mb-3 shadow-xs">
+              <Lock className="w-3.5 h-3.5 text-amber-600" />
+              <span>Portal Locked: Sign in required to view website</span>
+            </div>
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 font-heading tracking-tight">
               Sign In to Your Account
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              Enter your credentials to access the PDVolts industrial portal
+              Enter verified credentials to access the PDVolts platform
             </p>
           </div>
 
