@@ -8,8 +8,10 @@
     --foreground: 222.2 84% 4.9%;
   }
 
-  body {
+  html, body {
     @apply bg-white text-slate-900 antialiased font-sans;
+    max-width: 100vw;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {

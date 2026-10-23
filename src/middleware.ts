@@ -36,22 +36,10 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  const isAuthRoute =
-    pathname === "/login" ||
-    pathname === "/register" ||
-    pathname === "/forgot-password" ||
-    pathname === "/reset-password";
+  // NOTE: /login, /register, /forgot-password, /reset-password are fully accessible
+  // DO NOT redirect them away so users can always open login and register freely!
 
-  // 3. If already logged in and visiting login/register, let them go home or dashboard
-  if (sessionUser && isAuthRoute) {
-    const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
-    if (callbackUrl && callbackUrl !== "/login" && callbackUrl !== "/register") {
-      return NextResponse.redirect(new URL(callbackUrl, request.url));
-    }
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
-  // 4. Protect /admin routes (Only ADMIN & SUPER_ADMIN allowed)
+  // 3. Protect /admin routes (Only ADMIN & SUPER_ADMIN allowed)
   if (pathname.startsWith("/admin")) {
     if (!sessionUser) {
       const loginUrl = new URL("/login", request.url);
@@ -63,7 +51,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 5. Protect /dashboard routes (Any logged-in user allowed)
+  // 4. Protect /dashboard routes (Any logged-in user allowed)
   if (pathname.startsWith("/dashboard")) {
     if (!sessionUser) {
       const loginUrl = new URL("/login", request.url);
@@ -72,7 +60,7 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // Everything else is a public route (Home, Products, Raw Materials, Blog, About, etc.)
+  // Everything else is public (Home, Products, Raw Materials, Blog, About, etc.)
   return NextResponse.next();
 }
 
