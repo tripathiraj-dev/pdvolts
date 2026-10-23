@@ -49,23 +49,29 @@ export default function StatsCounter({ customStats }: StatsCounterProps) {
   ];
 
   return (
-    <section className="bg-slate-900 text-white py-14 border-y border-slate-800">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-6 divide-y lg:divide-y-0 lg:divide-x divide-slate-800">
+    <section className="bg-slate-900 text-white py-10 sm:py-14 border-y border-slate-800">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 lg:gap-6 lg:divide-x lg:divide-slate-800">
           {statsList.map((stat, idx) => {
             const Icon = stat.icon;
+            const isLastOnMobile = idx === 4;
             return (
-              <div key={idx} className={`pt-4 lg:pt-0 ${idx > 0 ? "lg:pl-6" : ""}`}>
-                <div className="flex items-center gap-2 mb-2 text-brand-400">
-                  <Icon className="w-5 h-5" />
-                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+              <div
+                key={idx}
+                className={`p-3.5 sm:p-4 lg:p-0 rounded-2xl bg-slate-950/60 lg:bg-transparent border border-slate-800/80 lg:border-0 ${
+                  idx > 0 ? "lg:pl-6" : ""
+                } ${isLastOnMobile ? "col-span-2 md:col-span-1" : ""}`}
+              >
+                <div className="flex items-center gap-1.5 sm:gap-2 mb-1.5 text-brand-400">
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-amber-400" />
+                  <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400">
                     {stat.label}
                   </span>
                 </div>
-                <div className="text-3xl sm:text-4xl font-extrabold font-heading text-white tracking-tight">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-extrabold font-heading text-white tracking-tight">
                   {stat.value}
                 </div>
-                <p className="text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-slate-400 mt-1 line-clamp-2 leading-relaxed">
                   {stat.description}
                 </p>
               </div>

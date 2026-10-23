@@ -26,6 +26,10 @@ import {
   Image as ImageIcon,
   Building,
   CheckCircle2,
+  PhoneCall,
+  MessageSquare,
+  ChevronRight,
+  FolderDown,
 } from "lucide-react";
 import Logo from "./Logo";
 import { siteConfig } from "@/config/site";
@@ -38,6 +42,7 @@ export default function Header() {
   const [user, setUser] = useState<{ name: string; email: string; role: string } | null>(null);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileActiveTab, setMobileActiveTab] = useState<string | null>(null);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -47,6 +52,18 @@ export default function Header() {
       .then((data) => setUser(data.user))
       .catch(() => setUser(null));
   }, [pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
 
   const handleLogout = async () => {
     try {
@@ -144,7 +161,7 @@ export default function Header() {
     },
   ];
 
-  // Secondary Bottom Navigation Bar Links
+  // Secondary Bottom Navigation Bar Links (Desktop)
   const secondaryLinks = [
     { label: "About Us", href: "/about" },
     { label: "Manufacturing Plant", href: "/manufacturing" },
@@ -161,8 +178,8 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-white border-b-2 border-slate-200 shadow-md transition-all overflow-x-clip">
-        {/* Top Corporate Strip */}
+      <header className="sticky top-0 z-40 w-full bg-white border-b border-slate-200/90 shadow-sm transition-all">
+        {/* Top Corporate Strip (Desktop only) */}
         <div className="hidden lg:block bg-slate-950 text-slate-300 text-xs border-b border-slate-800 py-2">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             {/* Quick Contact Info */}
@@ -219,15 +236,14 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Main Thick & Distinct Primary Navigation Bar */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 sm:h-22 py-2">
-            {/* Bold Brand Logo */}
-            <Logo variant="dark" />
+        {/* Main Navigation Bar */}
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-20 py-2">
+            {/* High-Impact Brand Logo */}
+            <Logo size="md" />
 
-            {/* Main Primary Links (Kept strictly to core 5 items so it never overflows screen width) */}
+            {/* Desktop Navigation Links */}
             <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-              {/* Home */}
               <Link
                 href="/"
                 className={`px-3.5 py-2 rounded-xl text-sm xl:text-[15px] font-bold transition-all ${
@@ -419,9 +435,8 @@ export default function Header() {
               </Link>
             </nav>
 
-            {/* Right Action Icons & Primary CTA Buttons */}
+            {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-2.5">
-              {/* Global Search Button */}
               <button
                 onClick={() => setSearchOpen(true)}
                 className="p-2.5 text-slate-600 hover:text-brand-600 hover:bg-slate-100 rounded-xl transition"
@@ -430,7 +445,6 @@ export default function Header() {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Admin Button */}
               {isAdmin && (
                 <Link
                   href="/admin"
@@ -442,7 +456,6 @@ export default function Header() {
                 </Link>
               )}
 
-              {/* User Session or Login */}
               {user ? (
                 <div className="relative">
                   <button
@@ -497,17 +510,14 @@ export default function Header() {
                   )}
                 </div>
               ) : (
-                <div className="flex items-center gap-1.5">
-                  <Link
-                    href="/login"
-                    className="px-3 py-2 text-sm font-bold text-slate-700 hover:text-brand-600 transition"
-                  >
-                    Log In
-                  </Link>
-                </div>
+                <Link
+                  href="/login"
+                  className="px-3 py-2 text-sm font-bold text-slate-700 hover:text-brand-600 transition"
+                >
+                  Log In
+                </Link>
               )}
 
-              {/* Primary High-Impact CTA Button */}
               <Link
                 href="/quote"
                 className="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs xl:text-sm font-extrabold text-white bg-gradient-to-r from-brand-700 via-brand-600 to-sky-600 hover:from-brand-800 hover:to-sky-700 shadow-md hover:shadow-lg transition-all transform active:scale-95"
@@ -517,28 +527,36 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* Mobile Actions & Hamburger */}
-            <div className="flex lg:hidden items-center gap-2">
+            {/* Mobile Header Actions (Compact, responsive, touch-friendly) */}
+            <div className="flex lg:hidden items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => setSearchOpen(true)}
-                className="p-2 text-slate-600 hover:text-brand-600 rounded-lg"
-                aria-label="Search"
+                className="p-2 text-slate-700 hover:text-brand-600 active:scale-95 rounded-xl hover:bg-slate-100 transition"
+                aria-label="Search Catalog"
               >
                 <Search className="w-5 h-5" />
               </button>
 
+              <a
+                href={`tel:${siteConfig.contact.phone}`}
+                className="p-2 text-amber-600 hover:text-amber-700 active:scale-95 rounded-xl hover:bg-amber-50 transition"
+                aria-label="Call Sales"
+              >
+                <PhoneCall className="w-5 h-5" />
+              </a>
+
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 text-slate-800 hover:text-slate-950 rounded-xl border border-slate-200"
-                aria-label="Toggle menu"
+                className="p-2 text-slate-900 active:scale-95 rounded-xl bg-slate-100 hover:bg-slate-200 transition border border-slate-200"
+                aria-label="Open Mobile Menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Secondary Sub-Navigation Strip (Clean corporate & technical links below main nav) */}
+        {/* Desktop Secondary Sub-Nav */}
         <div className="hidden lg:block bg-slate-100/90 border-t border-slate-200/80 py-1.5 text-xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             <div className="flex items-center gap-1 text-slate-600 font-semibold overflow-x-auto no-scrollbar py-0.5">
@@ -570,170 +588,265 @@ export default function Header() {
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-b border-slate-200 px-4 pt-3 pb-8 space-y-4 animate-in slide-in-from-top-2 max-h-[85vh] overflow-y-auto">
-            {/* Direct Raw Material Highlight in Mobile */}
-            <Link
-              href="/raw-materials"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 font-bold text-sm shadow-sm"
-            >
-              <div className="flex items-center gap-2.5">
-                <Zap className="w-5 h-5 text-amber-600" />
-                <span>Raw Materials Supply</span>
-              </div>
-              <span className="text-xs bg-amber-500 text-slate-950 px-2.5 py-0.5 rounded-full font-black">
-                99.99% Cu
-              </span>
-            </Link>
-
-            {/* Main Links */}
-            <div className="grid grid-cols-2 gap-2 py-1">
-              <Link
-                href="/"
+      {/* Modern Executive Mobile Navigation Drawer (Full-screen overlay) */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden flex flex-col bg-slate-950/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="w-full bg-white flex flex-col max-h-[92vh] rounded-b-3xl shadow-2xl overflow-hidden border-b-2 border-slate-200 animate-in slide-in-from-top-4 duration-300">
+            {/* Drawer Header */}
+            <div className="flex items-center justify-between px-4 py-3.5 border-b border-slate-100 bg-slate-50/80">
+              <Logo size="sm" />
+              <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
+                className="p-2 rounded-xl bg-slate-200/80 hover:bg-slate-300 text-slate-700 transition active:scale-95"
+                aria-label="Close Menu"
               >
-                Home
-              </Link>
-              <Link
-                href="/products"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Cables & Wires
-              </Link>
-              <Link
-                href="/products?category=plastic-polymer-components"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Pipes & Polymers
-              </Link>
-              <Link
-                href="/manufacturing"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Manufacturing
-              </Link>
-              <Link
-                href="/quality"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Quality Lab
-              </Link>
-              <Link
-                href="/industries"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Industries
-              </Link>
-              <Link
-                href="/downloads"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Downloads
-              </Link>
-              <Link
-                href="/gallery"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Gallery
-              </Link>
-              <Link
-                href="/blog"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Blog
-              </Link>
-              <Link
-                href="/careers"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                Careers
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-slate-800 hover:bg-slate-50"
-              >
-                About Us
-              </Link>
-              <Link
-                href="/contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-3.5 py-2.5 text-sm rounded-xl font-bold text-brand-700 bg-brand-50"
-              >
-                Enquiry & Contact
-              </Link>
+                <X className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Mobile Actions */}
-            <div className="pt-3 border-t border-slate-100 flex flex-col gap-2.5">
-              <Link
-                href="/quote"
-                onClick={() => setMobileMenuOpen(false)}
-                className="w-full text-center py-3 rounded-xl text-sm font-extrabold text-white bg-gradient-to-r from-brand-700 via-brand-600 to-sky-600 shadow-md"
+            {/* Scrollable Content */}
+            <div className="overflow-y-auto px-4 py-3 space-y-4">
+              {/* Quick Search Bar */}
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 text-xs font-semibold hover:border-brand-500 transition"
               >
-                Request a Quote
+                <span className="flex items-center gap-2">
+                  <Search className="w-4 h-4 text-slate-400" />
+                  <span>Search cables, pipes, raw materials...</span>
+                </span>
+                <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700">
+                  Search
+                </span>
+              </button>
+
+              {/* ⚡ High Priority: Mill-Direct Raw Materials Banner */}
+              <Link
+                href="/raw-materials"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block p-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-slate-950 shadow-md active:scale-[0.98] transition-transform"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="p-1.5 rounded-lg bg-black/20 text-slate-950">
+                      <Zap className="w-4 h-4 fill-slate-950" />
+                    </span>
+                    <div>
+                      <span className="text-xs font-black tracking-tight uppercase block text-slate-950">
+                        Mill-Direct Raw Materials
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-900 block opacity-90">
+                        99.99% ETP Copper Rods & Polymers
+                      </span>
+                    </div>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-slate-950 font-black" />
+                </div>
               </Link>
 
-              {user ? (
-                <div className="flex gap-2 pt-1">
+              {/* Core Vertical Categories */}
+              <div className="space-y-1.5">
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 block px-1">
+                  Product Catalogs & Divisions
+                </span>
+
+                <div className="grid grid-cols-2 gap-2">
                   <Link
-                    href="/dashboard"
+                    href="/products?category=industrial-power-cables"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex-1 text-center py-2.5 text-sm font-bold border border-slate-300 rounded-xl text-slate-800"
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex flex-col justify-between active:scale-95 transition"
                   >
-                    Dashboard
+                    <Layers className="w-5 h-5 text-sky-600 mb-1.5" />
+                    <span className="text-xs font-extrabold text-slate-900 block leading-tight">
+                      Cables & Wires
+                    </span>
+                    <span className="text-[10px] text-slate-500">Armored & Flexible</span>
                   </Link>
-                  {isAdmin && (
+
+                  <Link
+                    href="/products?category=plastic-polymer-components"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex flex-col justify-between active:scale-95 transition"
+                  >
+                    <Factory className="w-5 h-5 text-emerald-600 mb-1.5" />
+                    <span className="text-xs font-extrabold text-slate-900 block leading-tight">
+                      Pipes & Polymers
+                    </span>
+                    <span className="text-[10px] text-slate-500">Rigid uPVC Conduits</span>
+                  </Link>
+
+                  <Link
+                    href="/manufacturing"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex flex-col justify-between active:scale-95 transition"
+                  >
+                    <Building className="w-5 h-5 text-brand-600 mb-1.5" />
+                    <span className="text-xs font-extrabold text-slate-900 block leading-tight">
+                      Manufacturing
+                    </span>
+                    <span className="text-[10px] text-slate-500">Continuous Extrusion</span>
+                  </Link>
+
+                  <Link
+                    href="/quality"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200/80 flex flex-col justify-between active:scale-95 transition"
+                  >
+                    <FileCheck className="w-5 h-5 text-amber-600 mb-1.5" />
+                    <span className="text-xs font-extrabold text-slate-900 block leading-tight">
+                      Quality & Testing
+                    </span>
+                    <span className="text-[10px] text-slate-500">ISO 9001 & 15kV Spark</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Technical & Company Navigation Links */}
+              <div className="pt-1 border-t border-slate-100 space-y-1">
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 block px-1 mb-1">
+                  Company & Specifications
+                </span>
+
+                <div className="grid grid-cols-2 gap-1 text-xs font-semibold">
+                  <Link
+                    href="/about"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • About PDVolts
+                  </Link>
+                  <Link
+                    href="/industries"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • Industries
+                  </Link>
+                  <Link
+                    href="/downloads"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • Downloads / Specs
+                  </Link>
+                  <Link
+                    href="/gallery"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • Factory Gallery
+                  </Link>
+                  <Link
+                    href="/careers"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • Careers
+                  </Link>
+                  <Link
+                    href="/blog"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • Technical Blog
+                  </Link>
+                  <Link
+                    href="/faq"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-slate-700 hover:bg-slate-100"
+                  >
+                    • FAQs
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg text-brand-700 font-bold hover:bg-brand-50"
+                  >
+                    • Contact & Inquiry
+                  </Link>
+                </div>
+              </div>
+
+              {/* User Session or Login Box */}
+              <div className="pt-2 border-t border-slate-100">
+                {user ? (
+                  <div className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
+                    <div>
+                      <div className="text-xs font-extrabold text-slate-900">{user.name}</div>
+                      <div className="text-[11px] text-slate-500 truncate max-w-[170px]">{user.email}</div>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      {isAdmin && (
+                        <Link
+                          href="/admin"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="px-2.5 py-1 text-xs font-black bg-amber-200 text-amber-900 rounded-lg"
+                        >
+                          Admin
+                        </Link>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-100 rounded-lg"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 gap-2">
                     <Link
-                      href="/admin"
+                      href="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex-1 text-center py-2.5 text-sm font-black bg-amber-100 text-amber-900 border border-amber-300 rounded-xl flex items-center justify-center gap-1.5"
+                      className="text-center py-2.5 rounded-xl border-2 border-slate-300 font-bold text-xs text-slate-800 active:scale-95 transition"
                     >
-                      <Shield className="w-4 h-4 text-amber-700" /> Admin
+                      Client Login
                     </Link>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="px-3.5 py-2.5 text-sm font-bold text-rose-600 hover:bg-rose-50 rounded-xl"
-                  >
-                    Logout
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-2 pt-1">
-                  <Link
-                    href="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-center py-2.5 text-sm font-bold border-2 border-slate-300 rounded-xl text-slate-800"
-                  >
-                    Log In
-                  </Link>
-                  <Link
-                    href="/register"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="text-center py-2.5 text-sm font-bold bg-brand-700 text-white rounded-xl"
-                  >
-                    Register
-                  </Link>
-                </div>
-              )}
+                    <Link
+                      href="/quote"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="text-center py-2.5 rounded-xl bg-brand-700 text-white font-extrabold text-xs shadow-md active:scale-95 transition"
+                    >
+                      Get a Quote
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Quick Contact Footer Strip in Drawer */}
+            <div className="p-3 bg-slate-950 text-white flex items-center justify-around text-xs border-t border-slate-800">
+              <a
+                href={`tel:${siteConfig.contact.phone}`}
+                className="flex items-center gap-1.5 text-amber-400 font-bold hover:text-amber-300"
+              >
+                <Phone className="w-3.5 h-3.5" /> Call Sales
+              </a>
+              <span className="text-slate-700">|</span>
+              <a
+                href={`https://wa.me/${siteConfig.contact.whatsapp.replace(/[^0-9]/g, "")}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 text-emerald-400 font-bold hover:text-emerald-300"
+              >
+                <MessageSquare className="w-3.5 h-3.5" /> WhatsApp
+              </a>
+              <span className="text-slate-700">|</span>
+              <a
+                href={`mailto:${siteConfig.contact.salesEmail}`}
+                className="flex items-center gap-1.5 text-sky-400 font-bold hover:text-sky-300"
+              >
+                <Mail className="w-3.5 h-3.5" /> Email
+              </a>
             </div>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
       {/* Global Quick Search Modal */}
       <GlobalSearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />

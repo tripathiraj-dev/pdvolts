@@ -47,7 +47,7 @@ export default function Hero() {
       primaryCta: { label: "Explore Raw Materials", href: "/raw-materials" },
       secondaryCta: { label: "Request Bulk Quote", href: "/contact?subject=Raw+Material+Bulk+Supply" },
       accentColor: "from-amber-400 via-yellow-400 to-orange-500",
-      badgeBg: "bg-amber-500/90 text-slate-950 font-black",
+      badgeBg: "bg-amber-500 text-slate-950 font-black",
     },
     {
       id: "cables-wires",
@@ -61,7 +61,7 @@ export default function Hero() {
       primaryCta: { label: "Browse Cable Catalog", href: "/products" },
       secondaryCta: { label: "Request Custom RFQ", href: "/quote" },
       accentColor: "from-sky-300 via-cyan-400 to-blue-400",
-      badgeBg: "bg-sky-500/90 text-slate-950 font-black",
+      badgeBg: "bg-sky-500 text-slate-950 font-black",
     },
     {
       id: "pipes-polymers",
@@ -75,7 +75,7 @@ export default function Hero() {
       primaryCta: { label: "View Pipes & Polymers", href: "/products?category=plastic-polymer-components" },
       secondaryCta: { label: "Download Datasheets", href: "/downloads" },
       accentColor: "from-emerald-300 via-teal-400 to-green-400",
-      badgeBg: "bg-emerald-500/90 text-slate-950 font-black",
+      badgeBg: "bg-emerald-500 text-slate-950 font-black",
     },
   ];
 
@@ -161,7 +161,7 @@ export default function Hero() {
     <div className="w-full bg-slate-100">
       {/* 1. BRIGHT VIBRANT VIDEO CAROUSEL SECTION */}
       <section className="relative w-full overflow-hidden min-h-[460px] sm:min-h-[500px] lg:min-h-[540px] flex items-center bg-slate-900">
-        {/* Video Slides with Vibrant, Clear Lighting (No heavy pitch-black veil) */}
+        {/* Video Slides */}
         <div className="absolute inset-0 z-0">
           {slides.map((slide, index) => {
             const isActive = index === currentSlide;
@@ -172,13 +172,13 @@ export default function Hero() {
                   isActive ? "opacity-100 z-10" : "opacity-0 pointer-events-none z-0"
                 }`}
               >
-                {/* Clean Poster Image */}
+                {/* Poster Image */}
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-7000 scale-102"
                   style={{ backgroundImage: `url(${slide.posterImage})` }}
                 />
 
-                {/* Bright YouTube Video Embed (High Opacity so machinery is crystal clear) */}
+                {/* Bright YouTube Video Embed */}
                 {isActive && (
                   <div className="absolute inset-0 pointer-events-none overflow-hidden">
                     <iframe
@@ -193,32 +193,32 @@ export default function Hero() {
                   </div>
                 )}
 
-                {/* Soft, Light Industrial Gradient Overlay (Keeps text readable without turning video dark) */}
-                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-slate-950/45 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
+                {/* Soft Industrial Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-slate-950/85 via-slate-950/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-transparent to-transparent" />
               </div>
             );
           })}
         </div>
 
-        {/* Minimal, Punchy Content Directly Over Video (No heavy cards or clutter blocking the video!) */}
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 w-full">
-          <div className="max-w-2xl space-y-4">
+        {/* Minimal, Punchy Content Directly Over Video */}
+        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 w-full">
+          <div className="max-w-2xl space-y-3 sm:space-y-4">
             {/* Small Sleek Badge */}
             <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs shadow-md ${activeSlide.badgeBg}`}>
-                <span className="w-2 h-2 rounded-full bg-current animate-ping"></span>
-                <span>{activeSlide.badge}</span>
+              <span className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-[11px] sm:text-xs shadow-md ${activeSlide.badgeBg}`}>
+                <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-current animate-ping"></span>
+                <span className="truncate">{activeSlide.badge}</span>
               </span>
 
-              <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-white/90 bg-black/40 backdrop-blur-md px-2.5 py-0.5 rounded-full border border-white/20">
+              <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-white/90 bg-black/40 backdrop-blur-md px-2 py-0.5 rounded-full border border-white/20">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                Live Factory Feed
+                <span>Live Feed</span>
               </span>
             </div>
 
-            {/* Headline (Compact & Bold) */}
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white font-heading leading-tight drop-shadow-md">
+            {/* Headline (Responsive font scaling for mobile) */}
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white font-heading leading-tight drop-shadow-md">
               {activeSlide.title}{" "}
               <span className={`bg-gradient-to-r ${activeSlide.accentColor} bg-clip-text text-transparent`}>
                 {activeSlide.highlightText}
@@ -226,15 +226,15 @@ export default function Hero() {
             </h1>
 
             {/* Short 1-Line Subtitle */}
-            <p className="text-sm sm:text-base text-slate-100 max-w-xl font-medium drop-shadow leading-relaxed">
+            <p className="text-xs sm:text-sm md:text-base text-slate-100 max-w-xl font-medium drop-shadow leading-relaxed line-clamp-3 sm:line-clamp-none">
               {activeSlide.description}
             </p>
 
-            {/* Clean Action Buttons */}
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            {/* Clean Action Buttons (Full-width on mobile, flex on desktop) */}
+            <div className="pt-2 sm:pt-3 flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 max-w-md sm:max-w-none">
               <Link
                 href={activeSlide.primaryCta.href}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-brand-600 via-sky-600 to-blue-600 hover:from-brand-500 hover:to-sky-500 text-white font-extrabold text-sm shadow-lg shadow-black/40 transition-all transform hover:scale-105 active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-gradient-to-r from-brand-600 via-sky-600 to-blue-600 hover:from-brand-500 hover:to-sky-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-black/40 transition-all transform active:scale-95 text-center"
               >
                 <span>{activeSlide.primaryCta.label}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -242,7 +242,7 @@ export default function Hero() {
 
               <Link
                 href={activeSlide.secondaryCta.href}
-                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-sm backdrop-blur-md border border-white/40 shadow-sm transition"
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs sm:text-sm backdrop-blur-md border border-white/40 shadow-sm transition active:scale-95 text-center"
               >
                 {activeSlide.secondaryCta.label}
               </Link>
@@ -251,45 +251,45 @@ export default function Hero() {
         </div>
 
         {/* Floating Carousel Navigation & Controls at Bottom Right */}
-        <div className="absolute bottom-5 right-5 sm:right-8 z-30 flex items-center gap-2">
+        <div className="absolute bottom-3 sm:bottom-5 right-3 sm:right-8 z-30 flex items-center gap-1.5 sm:gap-2">
           {/* Audio & Play Controls */}
           <button
             onClick={() => setIsMuted(!isMuted)}
-            className="p-2.5 rounded-xl bg-black/50 hover:bg-black/75 text-white backdrop-blur border border-white/20 transition shadow"
+            className="p-2 sm:p-2.5 rounded-xl bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
             title={isMuted ? "Unmute Audio" : "Mute Audio"}
             aria-label="Toggle mute"
           >
-            {isMuted ? <VolumeX className="w-4 h-4 text-slate-300" /> : <Volume2 className="w-4 h-4 text-amber-400" />}
+            {isMuted ? <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-300" /> : <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />}
           </button>
 
           <button
             onClick={() => setIsPlaying(!isPlaying)}
-            className="p-2.5 rounded-xl bg-black/50 hover:bg-black/75 text-white backdrop-blur border border-white/20 transition shadow"
+            className="p-2 sm:p-2.5 rounded-xl bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
             title={isPlaying ? "Pause Auto-Slide" : "Play Auto-Slide"}
             aria-label="Toggle autoplay"
           >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 text-emerald-400" />}
+            {isPlaying ? <Pause className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />}
           </button>
 
           {/* Left / Right Arrows */}
           <button
             onClick={handlePrevSlide}
-            className="p-2.5 rounded-xl bg-black/50 hover:bg-black/75 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
+            className="p-2 sm:p-2.5 rounded-xl bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
             aria-label="Previous Slide"
           >
-            <ChevronLeft className="w-4 h-4" />
+            <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
           <button
             onClick={handleNextSlide}
-            className="p-2.5 rounded-xl bg-black/50 hover:bg-black/75 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
+            className="p-2 sm:p-2.5 rounded-xl bg-black/60 hover:bg-black/80 text-white backdrop-blur border border-white/20 transition shadow active:scale-95"
             aria-label="Next Slide"
           >
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
         </div>
 
-        {/* Slide Indicator Dots at Bottom Center */}
-        <div className="absolute bottom-5 left-5 sm:left-8 z-30 flex items-center gap-2">
+        {/* Slide Indicator Dots at Bottom Left */}
+        <div className="absolute bottom-3 sm:bottom-5 left-3 sm:left-8 z-30 flex items-center gap-1.5 sm:gap-2">
           {slides.map((_, idx) => (
             <button
               key={idx}
@@ -298,8 +298,8 @@ export default function Hero() {
               aria-label={`Slide ${idx + 1}`}
             >
               <div
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  idx === currentSlide ? "w-8 bg-amber-400" : "w-2.5 bg-white/50 hover:bg-white"
+                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 ${
+                  idx === currentSlide ? "w-6 sm:w-8 bg-amber-400" : "w-2 sm:w-2.5 bg-white/50 hover:bg-white"
                 }`}
               />
             </button>
@@ -307,38 +307,38 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* 2. PROMINENT PRODUCT CARDS DIRECTLY BELOW VIDEO (Raw Material, Wire, Pipe, Quality) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {/* 2. PRODUCT CARDS DIRECTLY BELOW VIDEO (Optimized responsive padding & layout) */}
+      <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {bottomCards.map((card) => {
             const Icon = card.icon;
             return (
               <Link
                 key={card.id}
                 href={card.href}
-                className={`group bg-white rounded-2xl p-5 sm:p-6 border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between ${card.accent}`}
+                className={`group bg-white rounded-2xl p-4 sm:p-6 border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] flex flex-col justify-between ${card.accent}`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-xl border ${card.iconColor} shadow-sm group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-6 h-6" />
+                  <div className="flex items-center justify-between mb-3 sm:mb-4">
+                    <div className={`p-2.5 sm:p-3 rounded-xl border ${card.iconColor} shadow-sm group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </div>
-                    <span className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${card.tagColor}`}>
+                    <span className={`text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${card.tagColor}`}>
                       {card.badge}
                     </span>
                   </div>
 
-                  <h2 className="text-lg font-black text-slate-900 group-hover:text-brand-700 transition-colors">
+                  <h2 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-brand-700 transition-colors">
                     {card.title}
                   </h2>
-                  <div className="text-xs font-bold text-slate-500 mt-0.5">{card.subtitle}</div>
+                  <div className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">{card.subtitle}</div>
 
-                  <p className="text-xs text-slate-600 mt-2.5 leading-relaxed">
+                  <p className="text-xs text-slate-600 mt-2 sm:mt-2.5 leading-relaxed line-clamp-2 sm:line-clamp-none">
                     {card.desc}
                   </p>
                 </div>
 
-                <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-brand-700 group-hover:text-brand-800">
+                <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-brand-700 group-hover:text-brand-800">
                   <span>Explore Catalog</span>
                   <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
