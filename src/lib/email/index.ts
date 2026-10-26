@@ -158,6 +158,7 @@ export async function sendAdminEnquiryNotificationEmail(enquiry: {
   company?: string | null;
   subject: string;
   message: string;
+  attachmentUrl?: string | null;
   id?: string;
   createdAt?: Date;
 }) {
@@ -193,6 +194,14 @@ export async function sendAdminEnquiryNotificationEmail(enquiry: {
           <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Subject:</td>
           <td style="padding: 6px 0; color: #0f172a; font-weight: 600;">${enquiry.subject}</td>
         </tr>
+        ${
+          enquiry.attachmentUrl
+            ? `<tr>
+          <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Attachment:</td>
+          <td style="padding: 6px 0; color: #026fc5;"><a href="${enquiry.attachmentUrl}" target="_blank" style="font-weight: bold; color: #d97706;">📎 View Uploaded File / Drawing</a></td>
+        </tr>`
+            : ""
+        }
         <tr>
           <td style="padding: 6px 0; color: #64748b; font-weight: 600;">Received At:</td>
           <td style="padding: 6px 0; color: #64748b;">${time}</td>

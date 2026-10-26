@@ -18,10 +18,12 @@ export default function Logo({
 }: LogoProps) {
   // Size configurations
   const heightClasses = {
-    sm: "h-8 sm:h-9",
-    md: "h-9 sm:h-11 md:h-12",
-    lg: "h-12 sm:h-14 md:h-16",
+    sm: "h-9 sm:h-10",
+    md: "h-11 sm:h-12 md:h-14",
+    lg: "h-14 sm:h-16 md:h-20",
   };
+
+  const isDarkBg = variant === "light";
 
   if (layout === "icon") {
     return (
@@ -30,16 +32,12 @@ export default function Logo({
         className={`inline-flex items-center group select-none ${className}`}
         aria-label="PDVOLT - Precision Wires, Cables, Polymers & Pipes"
       >
-        <div className="relative p-1.5 rounded-xl bg-slate-950 border border-slate-800 shadow-md group-hover:border-amber-500/60 group-hover:scale-105 transition-all duration-300">
+        <div className="relative p-0.5 transition-transform duration-200 group-hover:scale-105">
           <img
-            src="/images/pdvolt-icon.png"
+            src="/images/pdvolt-brand-master.png"
             alt="PDVOLT Emblem"
-            className="w-8 h-8 sm:w-10 sm:h-10 object-contain drop-shadow"
+            className="w-9 h-9 sm:w-11 sm:h-11 object-contain drop-shadow-sm"
           />
-          <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500 border border-slate-950"></span>
-          </span>
         </div>
       </Link>
     );
@@ -52,37 +50,52 @@ export default function Logo({
         className={`inline-flex flex-col group select-none ${className}`}
         aria-label="PDVOLT - Powering Your Projects"
       >
-        <div className="relative inline-block p-2 rounded-2xl bg-slate-950 border border-slate-800 shadow-xl group-hover:border-amber-500/50 group-hover:scale-[1.02] transition-all duration-300">
+        <div className="relative inline-block transition-transform duration-200 group-hover:scale-[1.02]">
           <img
-            src="/images/pdvolt-full.png"
-            alt="PDVOLT - Cables, Wires, Pipes, Raw Materials"
-            className="w-52 sm:w-60 h-auto object-contain drop-shadow-lg"
+            src="/images/pdvolt-brand-master.png"
+            alt="PDVOLT - Precision Wires, Cables, Polymers & Pipes"
+            className="w-44 sm:w-56 h-auto object-contain drop-shadow-md"
           />
         </div>
       </Link>
     );
   }
 
-  // Default: Horizontal Brand Lockup inside a high-tech obsidian capsule
+  // Default Horizontal Lockup: New 3D Brand Logo + Bold Typography Lockup
   return (
     <Link
       href="/"
       className={`inline-flex items-center group select-none shrink-0 ${className}`}
       aria-label="PDVOLT - Precision Wires, Cables, Polymers & Pipes"
     >
-      <div className="relative flex items-center bg-slate-950 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl border border-slate-800/90 shadow-md group-hover:border-amber-500/60 group-hover:shadow-amber-500/15 group-hover:scale-[1.02] transition-all duration-300">
+      <div className="flex items-center gap-2 sm:gap-2.5 transition-transform duration-200 group-hover:scale-[1.02]">
+        {/* New 3D Logo Mark */}
         <img
-          src="/images/pdvolt-horizontal.png"
-          alt="PDVOLT - Powering Your Projects"
-          className={`${heightClasses[size]} w-auto object-contain drop-shadow-md`}
+          src="/images/pdvolt-brand-master.png"
+          alt="PDVOLT Brand Logo"
+          className={`${heightClasses[size]} w-auto object-contain shrink-0 drop-shadow-sm`}
         />
-        
-        {/* Subtle ambient live spark badge */}
-        <span className="absolute -top-1 -right-1 flex h-2 w-2 sm:h-2.5 sm:w-2.5 pointer-events-none">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-2 w-2 sm:h-2.5 sm:w-2.5 bg-amber-500 border border-slate-950"></span>
-        </span>
+
+        {/* Wordmark typography in matching industrial blue & electric orange */}
+        <div className="flex flex-col justify-center leading-none">
+          <div className="flex items-baseline font-black font-heading tracking-tight text-xl sm:text-2xl">
+            <span className={isDarkBg ? "text-white" : "text-[#0B3B82]"}>PD</span>
+            <span className="text-[#FF6B00]">VOLT</span>
+          </div>
+
+          {showSubtitle && (
+            <span
+              className={`text-[8px] sm:text-[9.5px] font-bold uppercase tracking-widest mt-0.5 ${
+                isDarkBg ? "text-slate-400" : "text-slate-500"
+              }`}
+            >
+              Cables • Polymers • Pipes
+            </span>
+          )}
+        </div>
       </div>
     </Link>
   );
 }
+
+

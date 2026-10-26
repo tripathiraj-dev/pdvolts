@@ -83,50 +83,50 @@ export default function Hero() {
     {
       id: "card-raw",
       title: "Raw Materials",
-      subtitle: "Copper & Polymers",
-      desc: "99.99% ETP Copper Rods, EC Aluminum, Virgin PVC & XLPE Resins",
-      badge: "ASTM B49 • 50,000 MT",
+      subtitle: "Copper & Resins",
+      desc: "Mill-direct 99.99% ETP copper coils, EC aluminum & polymer granules.",
+      pills: ["99.99% Cu", "ASTM B49"],
       href: "/raw-materials",
       icon: Zap,
-      accent: "from-amber-500/20 to-orange-500/10 border-amber-300 group-hover:border-amber-500",
+      accent: "from-amber-500/15 to-orange-500/5 border-amber-200 hover:border-amber-400",
       iconColor: "text-amber-600 bg-amber-50 border-amber-200",
-      tagColor: "bg-amber-100 text-amber-900 border-amber-200",
+      tagColor: "bg-amber-50 text-amber-900 border-amber-200",
     },
     {
       id: "card-wires",
       title: "Cables & Wires",
       subtitle: "Power & Flexibility",
-      desc: "Armored XLPE 1.1kV-33kV, Flexible Building Wires, Solar PV & Submersible",
-      badge: "100% Spark Tested",
+      desc: "Armored XLPE 1.1kV-33kV, flexible multicore & solar PV cables.",
+      pills: ["Armored XLPE", "100% Spark Tested"],
       href: "/products?category=industrial-power-cables",
       icon: Layers,
-      accent: "from-sky-500/20 to-blue-500/10 border-sky-300 group-hover:border-sky-500",
+      accent: "from-sky-500/15 to-blue-500/5 border-sky-200 hover:border-sky-400",
       iconColor: "text-sky-600 bg-sky-50 border-sky-200",
-      tagColor: "bg-sky-100 text-sky-900 border-sky-200",
+      tagColor: "bg-sky-50 text-sky-900 border-sky-200",
     },
     {
       id: "card-pipes",
       title: "Pipes & Polymers",
       subtitle: "uPVC Conduit Systems",
-      desc: "Rigid Electrical Conduits, Weatherproof Junction Boxes & Terminal Blocks",
-      badge: "Self-Extinguishing UL94",
+      desc: "Rigid conduits, junction boxes, terminal blocks & molded fittings.",
+      pills: ["Rigid uPVC", "UL94 V-0"],
       href: "/products?category=plastic-polymer-components",
       icon: Factory,
-      accent: "from-emerald-500/20 to-teal-500/10 border-emerald-300 group-hover:border-emerald-500",
+      accent: "from-emerald-500/15 to-teal-500/5 border-emerald-200 hover:border-emerald-400",
       iconColor: "text-emerald-600 bg-emerald-50 border-emerald-200",
-      tagColor: "bg-emerald-100 text-emerald-900 border-emerald-200",
+      tagColor: "bg-emerald-50 text-emerald-900 border-emerald-200",
     },
     {
       id: "card-quality",
       title: "Quality & Testing",
-      subtitle: "Laboratory Protocols",
-      desc: "Optical Emission Spectrometry, 15kV In-Line Spark Testing & Lot Assurance",
-      badge: "ISO 9001:2015 & CE",
+      subtitle: "Certified Laboratory",
+      desc: "15kV in-line spark testing, Kelvin micro-ohm checks & lot MTC 3.1.",
+      pills: ["ISO 9001:2015", "CE & RoHS"],
       href: "/quality",
       icon: ShieldCheck,
-      accent: "from-indigo-500/20 to-purple-500/10 border-indigo-300 group-hover:border-indigo-500",
+      accent: "from-indigo-500/15 to-purple-500/5 border-indigo-200 hover:border-indigo-400",
       iconColor: "text-indigo-600 bg-indigo-50 border-indigo-200",
-      tagColor: "bg-indigo-100 text-indigo-900 border-indigo-200",
+      tagColor: "bg-indigo-50 text-indigo-900 border-indigo-200",
     },
   ];
 
@@ -316,31 +316,35 @@ export default function Hero() {
               <Link
                 key={card.id}
                 href={card.href}
-                className={`group bg-white rounded-2xl p-4 sm:p-6 border-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-[0.99] flex flex-col justify-between ${card.accent}`}
+                className={`group bg-white rounded-2xl p-4 sm:p-5 border transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] flex flex-col justify-between ${card.accent}`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
-                    <div className={`p-2.5 sm:p-3 rounded-xl border ${card.iconColor} shadow-sm group-hover:scale-110 transition-transform`}>
-                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+                  <div className="flex items-center justify-between mb-3">
+                    <div className={`p-2.5 rounded-xl border ${card.iconColor} shadow-sm group-hover:scale-105 transition-transform`}>
+                      <Icon className="w-5 h-5" />
                     </div>
-                    <span className={`text-[9px] sm:text-[10px] font-black uppercase px-2 py-0.5 rounded-md border ${card.tagColor}`}>
-                      {card.badge}
-                    </span>
+                    <div className="flex gap-1">
+                      {card.pills.map((pill, pIdx) => (
+                        <span key={pIdx} className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded border ${card.tagColor}`}>
+                          {pill}
+                        </span>
+                      ))}
+                    </div>
                   </div>
 
-                  <h2 className="text-base sm:text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors">
+                  <h2 className="text-base font-black text-slate-900 group-hover:text-amber-600 transition-colors">
                     {card.title}
                   </h2>
-                  <div className="text-[11px] sm:text-xs font-bold text-slate-500 mt-0.5">{card.subtitle}</div>
+                  <div className="text-[11px] font-semibold text-slate-500 mt-0.5">{card.subtitle}</div>
 
-                  <p className="text-xs text-slate-600 mt-2 sm:mt-2.5 leading-relaxed line-clamp-2 sm:line-clamp-none">
+                  <p className="text-xs text-slate-600 mt-2 leading-relaxed">
                     {card.desc}
                   </p>
                 </div>
 
-                <div className="mt-4 sm:mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
-                  <span>Explore Catalog</span>
-                  <ArrowUpRight className="w-4 h-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600 group-hover:text-amber-700">
+                  <span>Explore Section</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </div>
               </Link>
             );

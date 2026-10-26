@@ -11,6 +11,7 @@ const enquirySchema = z.object({
   company: z.string().optional().nullable(),
   subject: z.string().min(3, "Subject is required"),
   message: z.string().min(10, "Message must be at least 10 characters"),
+  attachmentUrl: z.string().optional().nullable(),
 });
 
 // POST: Public contact message submission
@@ -35,6 +36,7 @@ export async function POST(req: Request) {
         company: data.company || null,
         subject: data.subject,
         message: data.message,
+        attachmentUrl: data.attachmentUrl || null,
         status: "NEW",
       },
     });

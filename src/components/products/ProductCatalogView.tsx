@@ -40,6 +40,8 @@ interface ProductCatalogViewProps {
   initialCategory?: string;
 }
 
+const DEFAULT_CATALOG_IMG = "https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?auto=format&fit=crop&w=800&q=80";
+
 export default function ProductCatalogView({
   products,
   categories,
@@ -88,7 +90,7 @@ export default function ProductCatalogView({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by product name, conductor type, voltage or SKU..."
-              className="w-full pl-11 pr-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition"
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition"
             />
             {search && (
               <button
@@ -182,17 +184,14 @@ export default function ProductCatalogView({
               >
                 {/* Visual Image Header */}
                 <div className="relative h-52 bg-slate-950 overflow-hidden">
-                  {primaryImg ? (
-                    <img
-                      src={primaryImg}
-                      alt={p.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-slate-600">
-                      <Package className="w-12 h-12" />
-                    </div>
-                  )}
+                  <img
+                    src={primaryImg || DEFAULT_CATALOG_IMG}
+                    alt={p.name}
+                    onError={(e) => {
+                      e.currentTarget.src = DEFAULT_CATALOG_IMG;
+                    }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100"
+                  />
 
                   <span className="absolute top-3 left-3 px-2.5 py-1 rounded bg-slate-900/90 backdrop-blur text-white text-xs font-semibold">
                     {p.category.name}

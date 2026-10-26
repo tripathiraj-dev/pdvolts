@@ -179,7 +179,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="John Doe"
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />
         </div>
 
@@ -193,7 +193,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
             value={formData.company}
             onChange={(e) => setFormData({ ...formData, company: e.target.value })}
             placeholder="e.g. Apex Electrical EPC Ltd."
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             placeholder="john@company.com"
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />
         </div>
 
@@ -223,8 +223,8 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
             required
             value={formData.phone}
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            placeholder="+1 (555) 019-2834"
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            placeholder="+91 98765 43210"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />
         </div>
       </div>
@@ -239,8 +239,8 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
             type="text"
             value={formData.country}
             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-            placeholder="United States / Canada / Mexico / Europe"
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            placeholder="India / United States / Middle East / Europe"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           />
         </div>
 
@@ -251,7 +251,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
           <select
             value={formData.productId}
             onChange={(e) => setFormData({ ...formData, productId: e.target.value })}
-            className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+            className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
           >
             <option value="">-- Custom Engineering / Other --</option>
             {products.map((p) => (
@@ -274,7 +274,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
           value={formData.quantity}
           onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
           placeholder="e.g. 5,000 Meters / 2 Drums / 10 MT Pellets"
-          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+          className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
         />
       </div>
 
@@ -288,7 +288,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
           value={formData.requirements}
           onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
           placeholder="Specify conductor stranding, insulation rating, color code, drum lagging or required third-party witness testing..."
-          className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 text-sm focus:ring-2 focus:ring-brand-500 focus:border-brand-500 outline-none"
+          className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-base sm:text-sm focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition"
         />
       </div>
 
@@ -298,18 +298,18 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
           Attach Specification Sheet / Technical Drawing (PDF, DOC, DWG up to 10MB)
         </label>
         <div className="flex items-center gap-3">
-          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
+          <label className="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
             {uploading ? (
-              <Loader2 className="w-4 h-4 text-brand-600 animate-spin" />
+              <Loader2 className="w-4 h-4 text-amber-600 animate-spin" />
             ) : (
-              <Upload className="w-4 h-4 text-brand-600" />
+              <Upload className="w-4 h-4 text-amber-600" />
             )}
-            <span>{formData.attachmentUrl ? "Replace File" : "Choose File"}</span>
+            <span>{formData.attachmentUrl ? "Replace File" : "Choose File / Drawing"}</span>
             <input
               type="file"
               onChange={handleFileUpload}
               className="hidden"
-              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+              accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.dwg,.dxf"
             />
           </label>
           {formData.attachmentUrl && (
@@ -325,7 +325,7 @@ export default function QuoteForm({ products, preselectedProductId }: QuoteFormP
         <button
           type="submit"
           disabled={submitting || uploading}
-          className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-lg bg-brand-700 hover:bg-brand-800 text-white font-bold text-sm shadow-md transition disabled:opacity-60"
+          className="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black text-sm shadow-md transition disabled:opacity-60 min-h-[48px] active:scale-[0.99]"
         >
           {submitting ? (
             <>
